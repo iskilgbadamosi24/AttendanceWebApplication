@@ -158,7 +158,6 @@ namespace AttendanceWebApplication.Service
                 }
             };
 
-                // ... (rest of your Excel generation code)
             }
 
             var stream = new MemoryStream();
