@@ -1,0 +1,67 @@
+﻿@model AttendanceWebApplication.Models.AttendanceSummaryViewModel
+@{
+    ViewData["Title"] = "Detailed Comparison Result";
+    var countCourseCode = Model.CourseCode;
+    var duplicates = Model.TotalInAttendance;
+    var onlyInFile1 = Model.TotalMissingScore;
+    var onlyInFile2 = Model.TotalNotInAttendance;
+    string downloadLink = Model.DownloadLink;
+    var fileSessionKey = Model.DownloadLink;
+    var countMissingScore = onlyInFile1.Count;
+    var countNotInAttendance = onlyInFile2.Count;
+    var countInAttendance = duplicates.Count;
+    var totalStudents = countInAttendance + countMissingScore + countNotInAttendance;
+}
+
+<h2>Detailed Comparison Result</h2>
+
+<p>
+    <a asp-action="DownloadExcel" asp-controller="Compare" class="btn btn-secondary">🔙 Back to Summary</a>
+</p>
+@if (Model.DownloadLink != null)
+{
+    <p><a href="@Model.DownloadLink" class="btn btn-success">⬇️ Download Excel</a></p>
+}
+<div class="row">
+    <div class="col-md-4">
+        <h4> Course </h4>
+        <ul class="list-group">
+            @foreach (var item in Model.CourseCode) 
+            {
+                <li class="list-group-item">@item</li>
+            }
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <h4>✅ In Attendance(@countInAttendance)</h4>
+        <ul class="list-group">
+            @foreach (var item in Model.TotalInAttendance)
+            {
+                <li class="list-group-item">@item</li>
+            }
+        </ul>
+    </div>
+
+    <div class="col-md-4">
+        <h4>⚠️ Missing Score(@countMissingScore) </h4>
+        <ul class="list-group">
+            @foreach (var item in Model.TotalMissingScore)
+            {
+                <li class="list-group-item">@item</li>
+            }
+        </ul>
+    </div>
+
+    <div class="col-md-4">
+        <h4>❌ Not in Attendance(@countNotInAttendance) </h4>
+        <ul class="list-group">
+            @foreach (var item in Model.TotalNotInAttendance)
+            {
+                <li class="list-group-item">@item</li>
+            }
+        </ul>
+    </div>
+    
+</div>
+<a href="/Compare">Try Again</a>
+

@@ -1,0 +1,41 @@
+@model AttendanceWebApplication.Models.AttendanceSummaryViewModel
+@{
+    ViewBag.Title = "Exam Attendance Comparison";
+
+    var duplicates = Model.TotalInAttendance;
+    var onlyInFile1 = Model.TotalMissingScore;
+    var onlyInFile2 = Model.TotalNotInAttendance;
+    string downloadLink = Model.DownloadLink;
+    var fileSessionKey = Model.DownloadLink;
+    var countMissingScore = onlyInFile1.Count;
+    var countNotInAttendance = onlyInFile2.Count;
+    var countInAttendance = duplicates.Count;
+    var totalStudents = countInAttendance + countMissingScore + countNotInAttendance;
+}
+
+<h2>Excel Comparison Result</h2>
+
+@if (!string.IsNullOrEmpty(downloadLink))
+{
+    <p><a href="@downloadLink" class="btn btn-success">Download Excel File</a></p>
+}
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Total Students</th>
+            <th>In Attendance</th>
+            <th>Missing Score</th>
+            <th>Not In Attendance</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@totalStudents</td>
+            <td>@countInAttendance</td>
+            <td>@countMissingScore</td>
+            <td>@countNotInAttendance</td>
+        </tr>
+    </tbody>
+</table>
+<a href="/Compare">Try Again</a>

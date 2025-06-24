@@ -1,0 +1,59 @@
+﻿@model AttendanceWebApplication.Models.AttendanceSummaryViewModel
+@using System.Text.Json
+
+<h2>Course Detail: @Model.CourseCode</h2>
+
+<div>
+    <strong>Total Students:</strong> @Model.TotalStudents <br />
+    <strong>Scanned & Have Score:</strong> @Model.TotalInAttendanceCount <br />
+    <strong>Duplicates:</strong> @Model.DuplicatesCount <br />
+    <strong>Scanned but not found in Exam:</strong> @Model.TotalMissingScoreCount <br />
+    <strong>Found in Exam but Not Scanned:</strong> @Model.TotalNotInAttendanceCount <br />
+    <strong>Fresher Not Scanned:</strong> @Model.FresherNotInAttendanceCount <br />
+</div>
+
+<canvas id="courseChart" width="600" height="300"></canvas>
+
+<a href="@Model.DownloadLink" class="btn btn-success mt-2">📥 Download Excel</a>
+<a href="@Url.Action("Summary", "Compare")" class="btn btn-secondary mt-2">🔙 Back to Summary</a>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const data = {
+            labels: ['Scanned & Have Score', 'Scanned but not found in Exam', 'Found in Exam but Not Scanned', 'Duplicates', 'Fresher Not Scanned'],
+            datasets: [{
+                label: 'Count',
+                data: [
+        @Model.TotalInAttendanceCount,
+        @Model.TotalMissingScoreCount,
+        @Model.TotalNotInAttendanceCount,
+        @Model.DuplicatesCount,
+        @Model.FresherNotInAttendanceCount
+                ],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(255, 205, 86, 0.6)',
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(54, 162, 235, 0.6)'
+                ],
+            }]
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Attendance Breakdown for @Model.CourseCode'
+                    }
+                }
+            }
+        };
+
+        new Chart(document.getElementById('courseChart'), config);
+    </script>
+}

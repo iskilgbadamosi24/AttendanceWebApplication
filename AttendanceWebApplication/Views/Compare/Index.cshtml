@@ -1,0 +1,190 @@
+﻿@model AttendanceWebApplication.Models.AttendanceSummaryViewModel
+@if (Model != null)
+{
+    @* ViewData["Title"] = "Detailed Comparison Result"; *@
+    var courseCode = Model.CourseCode;
+    var duplicates = Model.Duplicates;
+    var inAttendance = Model.TotalInAttendance;
+    var missingScore = Model.TotalMissingScore;
+    var notInAttendance = Model.TotalNotInAttendance;
+    var FresherNotInAttendance = Model.FresherNotInAttendance;
+    string downloadLink = Model.DownloadLink;
+    var fileSessionKey = Model.DownloadLink;
+    var countDuplicates = duplicates.Count;
+    var countCourseCode = Model.CourseCodeCount;
+    var countMissingScore = Model.TotalMissingScoreCount;
+    var countNotInAttendance = Model.TotalNotInAttendanceCount;
+    var countInAttendance = Model.TotalInAttendanceCount;
+    var FresherNotInAttendanceCount = Model.FresherNotInAttendanceCount;
+    var totalStudents = Model.TotalStudents;
+}
+
+<h2>e-Attendance App</h2>
+@if (Model == null)
+{
+    <form asp-action="DownloadExcel" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="file1">Upload Scanned Attendance File</label>
+            <input type="file" class="form-control" name="file1" id="file1" required />
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="file2">Upload Registered Students File</label>
+            <input type="file" class="form-control" name="file2" id="file2" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Upload Files</button>
+    </form>
+    <a asp-controller="Compare" asp-action="Summary" class="btn btn-warning mt-3">
+        View All Attendance Records
+    </a>
+}
+@if (Model != null)
+{
+    <p><a href="@Model.DownloadLink" class="btn btn-success">⬇️ Download Excel</a></p>
+    <h5> -------------------------- </h5>
+
+    <h5>   Course : @Model.CourseCode </h5>
+    <h5> --------------------------   </h5>
+
+    <h5>👤 Total Students : @Model.TotalStudents</h5>
+
+    <h5> ----------------------------------------------------------------------------------------------------------------------------------------------------------------- </h5>
+    
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Course Code</th>
+                <th>Total eExam Students</th>
+                <th>Scanned & Have Score</th>
+                <th>Duplicate Students</th>
+                <th>Scanned but not found in Exam </th>
+                <th>Found in Exam but Not Scanned</th>
+                <th>Fresher Not Scanned</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.CourseCode</td>
+                <td>@Model.TotalStudents</td>
+                <td>@Model.TotalInAttendanceCount</td>
+                <td>@Model.DuplicatesCount</td>
+                <td>@Model.TotalMissingScoreCount</td>
+                <td>@Model.TotalNotInAttendanceCount</td>
+                <td>@Model.FresherNotInAttendanceCount</td>
+            </tr>
+        </tbody>
+
+    </table>
+    <a asp-controller="Compare" asp-action="Summary" class="btn btn-warning mt-3">
+        View All Attendance Records
+    </a>
+    <a href="/Compare">Try Again</a>
+    <h5> ----------------------------------------------------------------------------------------------------------------------------------------------------------------- </h5>
+
+    <div class="row">
+   
+        <div class="col-md-2">
+            <h5>✅ In Attendance: @Model.TotalInAttendanceCount</h5>
+            <ul class="list-group">
+                @foreach (var item in Model.TotalInAttendance)
+                {
+                    <li class="list-group-item">@item</li>
+                }
+            </ul>
+        </div>
+        <div class="col-md-2">
+            <h5>❌ Not in Attendance: @Model.TotalNotInAttendanceCount </h5>
+            <ul class="list-group">
+                @foreach (var item in Model.TotalNotInAttendance)
+                {
+                    <li class="list-group-item">@item</li>
+                }
+            </ul>
+        </div>
+        <div class="col-md-2">
+            <h5> ❌ Freher Not in Attendance: @Model.FresherNotInAttendanceCount </h5>
+            <ul class="list-group">
+                    @foreach (var item in Model.FresherNotInAttendance)
+                {
+                    <li class="list-group-item">@item</li>
+                }
+            </ul>
+        </div>
+        <div class="col-md-2">
+            <h5> ❌ Duplicates in Attendance: @Model.DuplicatesCount </h5>
+            <ul class="list-group">
+                @foreach (var item in Model.Duplicates)
+                {
+                    <li class="list-group-item">@item</li>
+                }
+            </ul>
+        </div>
+
+        <div class="col-md-2">
+                <h5>⚠️ Missing Score: @Model.TotalMissingScoreCount </h5>
+            <ul class="list-group">
+                @foreach (var item in Model.TotalMissingScore)
+                {
+                    <li class="list-group-item">@item</li>
+                }
+            </ul>
+        </div> 
+    </div>   
+}
+
+
+    @* @if (ViewBag.DownloadLink != null) *@
+    @* { *@
+    @*     <div class="mt-4"> *@
+    @*         <a href="@Url.Content(ViewBag.DownloadLink)" class="btn btn-success" download> *@
+    @*             Download Comparison Excel *@
+    @*         </a> *@
+    @*     </div> *@
+    @* } *@
+
+
+
+
+
+
+
+@* @model ScannedExamAttendance *@
+@* @{ *@
+@*     ViewBag.Title = "Upload Files"; *@
+@* } *@
+@* <h2><strong>E-Exam Attendance App</strong></h2> *@
+@* <h4>Upload Files</h4> *@
+
+@* <div> *@
+    
+@*     <div> *@
+
+@*         <form asp-action="DownloadExcel" method="post" enctype="multipart/form-data"> *@
+          
+@*             <div> *@
+@*                 <label>File 1:</label> *@
+@*                 <input type="file" name="file1" /> *@
+@*             </div> *@
+@*             <div> *@
+@*                 <label>File 2:</label> *@
+@*                 <input type="file" name="file2" /> *@
+@*             </div> *@
+@*             <button type="submit">Download Result as Excel</button> *@
+            
+@*         </form> *@
+
+@*     </div> *@
+@*     <div> *@
+@*         <form asp-action="Index" method="post" class="btn btn-primary">  *@
+@*              <button type="submit">Go to Result View</button>  *@
+@*         </form> *@
+@*     </div> *@
+    
+@* </div> *@
+
+
+@* @if (ViewBag.Error != null) *@
+@* { *@
+@*     <p style="color:red">@ViewBag.Error</p> *@
+@* } *@

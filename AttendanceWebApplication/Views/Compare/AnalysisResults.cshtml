@@ -1,0 +1,35 @@
+﻿@model AttendanceWebApplication.Models.AttendanceSummaryViewModel
+
+@{
+    var duplicates = Model.TotalInAttendance;
+    var onlyInFile1 = Model.TotalMissingScore;
+    var onlyInFile2 = Model.TotalNotInAttendance;
+    string downloadLink = Model.DownloadLink;
+    var fileSessionKey = Model.DownloadLink;
+    var countMissingScore = onlyInFile1.Count;
+    var countNotInAttendance = onlyInFile2.Count;
+    var countInAttendance = duplicates.Count;
+    var totalStudents = countInAttendance + countMissingScore + countNotInAttendance;
+
+}
+
+<h2>Analysis Results</h2>
+
+<ul>
+    <li><strong>Duplicates:</strong>@countInAttendance</li>
+    <li><strong>Only in File 1:</strong>@countMissingScore</li>
+    <li><strong>Only in File 2:</strong>@countNotInAttendance</li>
+</ul>
+
+<form method="post" asp-action="DownloadExcel">
+    <input type="hidden" name="file1Name" value="@ViewBag.File1Name" />
+    <input type="hidden" name="file2Name" value="@ViewBag.File2Name" />
+    <button type="submit" class="btn btn-primary">Download Excel Report</button>
+</form>
+<a href="/Compare">Try Again</a>
+@* <script> *@
+@*     const duplicates = @Html.Raw(duplicatesJson); *@
+@*     const onlyInFile1 = @Html.Raw(onlyInFile1Json); *@
+@*     const onlyInFile2 = @Html.Raw(onlyInFile2Json); *@
+@*     console.log({ duplicates, onlyInFile1, onlyInFile2 }); *@
+@* </script> *@

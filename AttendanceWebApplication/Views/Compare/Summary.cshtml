@@ -1,0 +1,46 @@
+﻿@model List<AttendanceWebApplication.Models.AttendanceSummaryViewModel>
+
+<h2>Summary</h2>
+
+@if (Model == null || !Model.Any())
+{
+    <h6>No Data Found</h6>
+}
+else
+{
+
+    <a class="btn btn-success mb-2" href="/Compare/ExportAllSummaryToExcel">📤 Export All Summary to Excel</a>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Course Code</th>
+                <th>Total eExam Students</th>
+                <th>Scanned & Have Score</th>
+                <th>Duplicate Students</th>
+                <th>Scanned but not found in Exam </th>
+                <th>Found in Exam but Not Scanned</th>
+                <th>Fresher Not Scanned</th>
+                <th>Chart</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var summary in Model)
+            {
+                <tr>
+                    <td>@summary.CourseCode</td>
+                    <td>@summary.TotalStudents</td>
+                    <td>@summary.TotalInAttendanceCount</td>
+                    <td>@summary.DuplicatesCount</td>
+                    <td>@summary.TotalMissingScoreCount</td>
+                    <td>@summary.TotalNotInAttendanceCount</td>
+                    <td>@summary.FresherNotInAttendanceCount</td>
+                    <td><a asp-action="CourseDetail" asp-route-courseCode="@summary.CourseCode" 
+                        class="btn btn-sm btn-info">View</a></td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a href="/Compare">Try Again</a>
+}
